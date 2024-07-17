@@ -49,7 +49,7 @@ Route::put('/ads/{ad}', [AdController::class, 'update'])->name('ads.update');
 Route::delete('/ads/{ad}', [AdController::class, 'destroy'])->name('ads.destroy');
 
 Route::get('/download-links', [DownloadLinkController::class, 'index'])->name('download-links.index');
-Route::get('/download-links/create', [DownloadLinkController::class, 'create'])->name('download-links.create');
+Route::get('/download-link/create', [DownloadLinkController::class, 'create'])->name('download-links.create');
 Route::post('/download-links', [DownloadLinkController::class, 'store'])->name('download-links.store');
 Route::get('/download-links/{id}', [DownloadLinkController::class, 'show'])->name('download-links.show');
 Route::get('/download-links/{id}/edit', [DownloadLinkController::class, 'edit'])->name('download-links.edit');

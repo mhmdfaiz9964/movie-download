@@ -25,31 +25,31 @@ class DownloadLinkController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'type' => 'required|string|in:movies,tv_series,subtitles,videos',
+            'type' => 'required|string|in:movies,tv_series,videos', // Adjusted types
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'description' => 'nullable|string',
             'types.*' => 'nullable|string|max:255',
         ]);
-
+    
         $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('download_links_images', 'public');
         }
-
+    
         $downloadLink = DownloadLink::create([
             'title' => $request->title,
             'type' => $request->type,
             'image' => $imagePath,
             'description' => $request->description,
         ]);
-
+    
         foreach ($request->types ?? [] as $type) {
             DownloadLinksHasType::create([
                 'download_links_id' => $downloadLink->id,
                 'type' => $type,
             ]);
         }
-
+    
         return redirect()->route('download-links.index')->with('success', 'Download link created successfully.');
     }
 
@@ -116,27 +116,29 @@ class DownloadLinkController extends Controller
             'link_type_input' => 'nullable|string|max:255',
             'url' => 'required|url',
         ]);
-
+    
         $downloadLink = DownloadLink::findOrFail($id);
-
+    
         $linkType = $request->input('link_type') ?: $request->input('link_type_input');
-
+    
         if ($linkType) {
+            // Find or create the DownloadLinksHasType entry
             $type = DownloadLinksHasType::firstOrCreate([
                 'download_links_id' => $downloadLink->id,
                 'type' => $linkType,
             ]);
-
+    
+            // Create a new link for the specified type
             DownloadLinksHasTypeHasLink::create([
                 'download_links_has_types_id' => $type->id,
                 'url' => $request->url,
-                'link_type' => $linkType,
+                'link_type' => $request->input('link_type_input'), // Store the link_type_input in link_type column
             ]);
+    
+            return redirect()->back()->with('success', 'Link added successfully.');
         } else {
             return redirect()->back()->with('error', 'Please select or enter a valid link type.');
         }
-
-        return redirect()->back()->with('success', 'Link added successfully.');
     }
 
     public function destroy($id)

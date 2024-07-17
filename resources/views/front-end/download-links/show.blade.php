@@ -36,15 +36,37 @@
                     </div>
                 </div>
                 
-                <h2 class="text-xl sm:text-2xl font-bold mb-2">Types:</h2>
+                {{-- <h2 class="text-xl sm:text-2xl font-bold mb-2">Types:</h2>
                 <ul class="flex flex-wrap gap-2 mb-4">
                     @foreach ($downloadLink->types as $type)
                         <li class="bg-blue-500 text-white py-1 px-3 rounded-lg text-sm">{{ $type->type }}</li>
                     @endforeach
-                </ul>
+                </ul> --}}
                 
                 <h2 class="text-xl sm:text-2xl font-bold mb-2 mt-4">Subtitles:</h2>
-                <div class="mb-4">
+                    <div class="space-y-4">
+                        <div class="border shadow-lg rounded-lg p-4">
+                            <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4">
+                                <div class="w-full md:w-1/3">
+                                    <select id="language-select" class="w-full border border-gray-300 rounded-md py-2 px-3">
+                                        <option value="en">English</option>
+                                        <option value="ta">Tamil</option>
+                                        <option value="sg">Sungala</option>
+                                        <option value="fr">French</option>
+                                        <option value="de">German</option>
+                                        <option value="es">Spanish</option>
+                                        <option value="jp">Japanese</option>                                        
+                                    </select>
+                                </div>
+                                <div class="w-full md:w-1/3">
+                                    <a id="download-link" href="#" target="_blank" class="inline-block bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md transition duration-300 w-full text-center">
+                                        <i class="fas fa-download mr-1"></i> Download
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{-- <div class="mb-4">
                     @foreach ($downloadLink->subtitles as $subtitle)
                     <div class="inline-flex rounded-md shadow-sm" role="group">
                         <div class="ml-4 flex gap-2">
@@ -61,34 +83,26 @@
                         </div>
                     @endforeach
                 </div>
-                
+                 --}}
                 <h2 class="text-xl sm:text-2xl font-bold mb-2 mt-4">Download Links:</h2>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full bg-white border rounded-lg">
-                        <thead class="bg-gray-100 text-gray-800 uppercase text-sm leading-normal">
-                            <tr>
-                                <th class="py-3 px-6 text-left">Type</th>
-                                <th class="py-3 px-6 text-left">Link</th>
-                                <th class="py-3 px-6 text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-gray-700 text-sm">
-                            @foreach ($downloadLink->types as $type)
+                <div class="space-y-4">
+                    @foreach ($downloadLink->types as $type)
+                        <div class="border shadow-lg rounded-lg p-4">
+                            <h3 class="text-lg font-bold mb-4 text-center">{{ $type->type }}</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 @foreach ($type->links as $link)
-                                    <tr>
-                                        <td class="py-3 px-6 text-left">{{ $type->type }}</td>
-                                        <td class="py-3 px-6 text-left"><a href="{{ $link->url }}" target="_blank">{{ $link->link_type }}</a></td>
-                                        <td class="py-3 px-6 text-center">
-                                            <a href="{{ $link->url }}" target="_blank" class="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md transition duration-300 flex items-center justify-center">
-                                                <i class="fas fa-download mr-1"></i> Download
-                                            </a>
-                                        </td>
-                                    </tr>
+                                    <div class="border border-blue-500 rounded-md p-2 flex items-center justify-center">
+                                        <a href="{{ $link->url }}" target="_blank" class="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md transition duration-300 w-full text-center">
+                                            <i class="fas fa-download mr-1"></i> {{ $link->link_type }}
+                                        </a>
+                                    </div>
                                 @endforeach
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
+                
+                
             </div>
         </div>
         <div class="hidden sm:block w-1/6">
